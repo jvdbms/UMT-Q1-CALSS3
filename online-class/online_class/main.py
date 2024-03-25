@@ -63,3 +63,10 @@ def create_todo(todo: Todo, session: Annotated[Session, Depends(get_session)]):
 def read_todos(session: Annotated[Session, Depends(get_session)]):
         todos = session.exec(select(Todo)).all()
         return todos
+
+
+@app.delete("/todos/{id}")
+def delete_todos(session: Annotated[Session, Depends(get_session)], id: int):
+        todos = session.exec(select(Todo).where(Todo.id == id)).all()
+        session.delete(todos)
+        return {"response": "OK"}
